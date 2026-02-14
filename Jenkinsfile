@@ -1,25 +1,18 @@
 pipeline {
-    agent {
-  label 'dev'
-}
-tools {
-  maven 'maven'
-}
+    agent any
+
     stages {
-        stage('Git') {
+        stage('Get the code from GitHub') {
             steps {
-                git branch: 'main', url: 'https://github.com/vamsibyramala/pet_shop.git'
+                git branch: 'main', url: 'https://github.com/Vinay21211/pet_shop.git'
             }
         }
-        stage('maven') {
+
+        stage('Build with Maven') {
             steps {
                 sh 'mvn clean package'
             }
         }
-        stage('deploy') {
-            steps {
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat', path: '', url: 'http://18.216.225.116:8080/')], contextPath: 'myapp', war: '**/*.war'
-            }
-        }
     }
 }
+
